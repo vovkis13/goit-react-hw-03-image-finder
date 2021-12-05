@@ -5,12 +5,15 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Searchbar from '../Searchbar/';
 import ImageGallery from '../ImageGallery';
 import Button from '../Button';
-// import Modal from '../Modal';
+import Modal from '../Modal';
 
 import s from './App.module.css';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '23902018-2ad96957ecb94a5813d6bfdc3';
+const TYPE = 'photo';
+const ORIENT = 'horizontal';
+const PER_PAGE = 12;
 
 export default class App extends Component {
   state = {
@@ -18,6 +21,7 @@ export default class App extends Component {
     query: '',
     collection: [],
     loading: false,
+    currentImage: '',
   };
 
   handleSubmit = async e => {
@@ -25,7 +29,7 @@ export default class App extends Component {
     this.setState({ loading: true });
     this.state.query = e.target[1].value;
     const collection = await fetch(
-      `${BASE_URL}?q=${this.state.query}&page=${e.target[1].value}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`,
+      `${BASE_URL}?q=${this.state.query}&page=${e.target[1].value}&key=${API_KEY}&image_type=${TYPE}&orientation=${ORIENT}&per_page=${PER_PAGE}`,
     )
       .then(res => res.json())
       .then(data => data.hits)
@@ -54,7 +58,13 @@ export default class App extends Component {
     }));
   };
 
-  handleImageMaximize = async e => {};
+  handleImageMaximize = async e => {
+    const currentImage = this.state.collection.find(
+      image => image.id === e.target.id,
+    );
+    this.setState({ currentImage });
+  };
+
   render() {
     return (
       <div className={s.app}>
@@ -75,11 +85,11 @@ export default class App extends Component {
           </div>
         )}
         {this.state.collection.length > 0 &&
-          !(this.state.collection.length < 12) && (
+          !(this.state.collection.length < PER_PAGE) && (
             <Button handleClick={this.handleLoadMore} />
           )}
 
-        {/* <Modal /> */}
+        {this.state.currentImage && <Modal image={this.state.currentImage} />}
       </div>
     );
   }
