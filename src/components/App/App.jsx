@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-// import { nanoid } from 'nanoid';
-// import Loader from 'react-loader-spinner';
-// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import Searchbar from '../Searchbar/';
 import ImageGallery from '../ImageGallery';
@@ -18,18 +17,25 @@ export default class App extends Component {
     page: 1,
     query: '',
     collection: [],
+    loading: false,
   };
 
   handleSubmit = async e => {
     e.preventDefault();
+    this.setState({ loading: true });
     this.state.query = e.target[1].value;
     const collection = await fetch(
-      `${BASE_URL}?q=${this.state.query}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`,
+      `${BASE_URL}?q=${this.state.query}&page=${e.target[1].value}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`,
     )
       .then(res => res.json())
       .then(data => data.hits)
       .catch(console.log);
-    this.setState({ collection });
+    this.setState({
+      page: 1,
+      query: e.target[1].value,
+      collection,
+      loading: false,
+    });
   };
 
   handleLoadMore = async e => {
@@ -48,21 +54,31 @@ export default class App extends Component {
     }));
   };
 
+  handleImageMaximize = async e => {};
   render() {
     return (
       <div className={s.app}>
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery collection={this.state.collection} />
-        {this.state.collection.length && (
-          <Button handleClick={this.handleLoadMore} />
+        <ImageGallery
+          collection={this.state.collection}
+          onMaximize={this.handleImageMaximize}
+        />
+        {this.state.loading && (
+          <div className={s.loaderWrapper}>
+            <Loader
+              type="Puff"
+              color="#00BFFF"
+              height={100}
+              width={100}
+              timeout={3000} //3 secs
+            />
+          </div>
         )}
-        {/* <Loader
-          type="Puff"
-          color="#00BFFF"
-          height={100}
-          width={100}
-          timeout={3000} //3 secs
-        /> */}
+        {this.state.collection.length > 0 &&
+          !(this.state.collection.length < 12) && (
+            <Button handleClick={this.handleLoadMore} />
+          )}
+
         {/* <Modal /> */}
       </div>
     );
