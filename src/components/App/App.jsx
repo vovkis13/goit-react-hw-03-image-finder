@@ -57,27 +57,24 @@ export default class App extends Component {
   handleCloseModal = () => this.setState({ currentImage: null });
 
   render() {
+    const { total, collection, loading, currentImage } = this.state;
     return (
       <div className={s.app}>
         <Searchbar onSubmit={this.handleSubmit} />
         <ImageGallery
-          collection={this.state.collection}
+          collection={collection}
           onMaximize={this.handleImageMaximize}
         />
-        {this.state.loading && (
+        {loading && (
           <div className={s.loaderWrapper}>
             <Loader type="Rings" color="#00BFFF" height={120} width={120} />
           </div>
         )}
-        {this.state.collection.length > 0 &&
-          this.state.total > this.state.collection.length && (
-            <Button handleClick={this.handleLoadMore} />
-          )}
-        {this.state.currentImage && (
-          <Modal
-            image={this.state.currentImage}
-            closeModal={this.handleCloseModal}
-          />
+        {collection.length > 0 && total > collection.length && (
+          <Button handleClick={this.handleLoadMore} />
+        )}
+        {currentImage && (
+          <Modal image={currentImage} closeModal={this.handleCloseModal} />
         )}
       </div>
     );

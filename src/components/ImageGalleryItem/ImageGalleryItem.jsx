@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import s from './ImageGalleryItem.module.css';
 
 export default function ImageGalleryItem({ image, onMaximize }) {
@@ -15,3 +16,8 @@ export default function ImageGalleryItem({ image, onMaximize }) {
     </li>
   );
 }
+
+ImageGalleryItem.propTypes = {
+  image: PropTypes.object.isRequired,
+  onMaximize: PropTypes.func.isRequired,
+};

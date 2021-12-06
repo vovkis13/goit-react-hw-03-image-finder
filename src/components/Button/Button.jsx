@@ -1,6 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-scroll';
-
 import s from './Button.module.css';
 
 export default function Button({ handleClick }) {
@@ -23,3 +23,7 @@ export default function Button({ handleClick }) {
     </Link>
   );
 }
+
+Button.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+};
