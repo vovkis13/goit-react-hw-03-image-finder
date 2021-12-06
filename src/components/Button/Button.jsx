@@ -1,11 +1,25 @@
 import React from 'react';
-import s from './Button.module.css';
+import { Link } from 'react-scroll';
 
+import s from './Button.module.css';
 
 export default function Button({ handleClick }) {
   return (
-    <button className={s.button} type="button" onClick={handleClick}>
-      Load more
-    </button>
+    <Link
+      className={s.Link}
+      activeClass="active"
+      to="loadMoreButton"
+      smooth={true}
+      duration={500}
+    >
+      <button
+        className={s.button}
+        type="button"
+        onClick={handleClick}
+        id="loadMoreButton"
+      >
+        Load more
+      </button>
+    </Link>
   );
 }

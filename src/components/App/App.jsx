@@ -92,7 +92,6 @@ export default class App extends Component {
           !(this.state.collection.length < PER_PAGE) && (
             <Button handleClick={this.handleLoadMore} />
           )}
-
         {this.state.currentImage && (
           <Modal
             image={this.state.currentImage}
