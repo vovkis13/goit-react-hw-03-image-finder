@@ -64,6 +64,7 @@ export default class App extends Component {
     );
     this.setState({ currentImage });
   };
+
   handleCloseModal = () => {
     this.setState({ currentImage: null });
   };
