@@ -13,18 +13,17 @@ export default class Modal extends Component {
   handleKeyDown = e => e.code === 'Escape' && this.props.closeModal();
 
   render() {
-    const { image, closeModal } = this.props;
-    const { largeImageURL, tags } = image;
+    const { imageURL, closeModal } = this.props;
     return (
       <div className={s.overlay} onClick={closeModal}>
         <div className={s.modal}>
-          <img className={s.image} src={largeImageURL} alt={tags} />
+          <img className={s.image} src={imageURL} alt="" />
         </div>
       </div>
     );
   }
 }
 Modal.propTypes = {
-  image: PropTypes.object.isRequired,
+  imageURL: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
 };

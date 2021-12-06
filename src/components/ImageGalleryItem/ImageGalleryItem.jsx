@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import s from './ImageGalleryItem.module.css';
 
 export default function ImageGalleryItem({ image, onMaximize }) {
-  const { id, webformatURL, tags } = image;
+  const { id, webformatURL, largeImageURL, tags } = image;
   return (
     <li className={s.galleryItem}>
       <img
@@ -12,6 +12,7 @@ export default function ImageGalleryItem({ image, onMaximize }) {
         src={webformatURL}
         alt={tags}
         onClick={onMaximize}
+        data-large={largeImageURL}
       />
     </li>
   );

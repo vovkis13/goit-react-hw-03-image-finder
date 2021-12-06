@@ -15,16 +15,14 @@ export default class App extends Component {
     total: 0,
     collection: [],
     loading: false,
-    currentImage: '',
+    largeURL: '',
   };
 
   handleSubmit = async e => {
     if (!e.target[1].value) return;
     e.preventDefault();
     this.setState({ loading: true });
-    const res = await fetchImages(e.target[1].value, this.state.page).catch(
-      console.log,
-    );
+    const res = await fetchImages(e.target[1].value, 1);
     this.setState({
       page: 1,
       total: res.total,
@@ -37,27 +35,21 @@ export default class App extends Component {
   handleLoadMore = async e => {
     e.preventDefault();
     this.setState({ loading: true });
-    const extraImages = await fetchImages(this.state.query, this.state.page + 1)
-      .then(res => res.hits)
-      .catch(console.log);
+    const res = await fetchImages(this.state.query, this.state.page + 1);
     this.setState(prevState => ({
       page: prevState.page + 1,
-      collection: [...prevState.collection, ...extraImages],
+      collection: [...prevState.collection, ...res.hits],
       loading: false,
     }));
   };
 
-  handleImageMaximize = async ({ target }) => {
-    const currentImage = this.state.collection.find(
-      ({ id }) => id === Number(target.id),
-    );
-    this.setState({ currentImage });
-  };
+  handleImageMaximize = ({ target }) =>
+    this.setState({ largeURL: target.dataset.large });
 
-  handleCloseModal = () => this.setState({ currentImage: null });
+  handleCloseModal = () => this.setState({ largeURL: '' });
 
   render() {
-    const { total, collection, loading, currentImage } = this.state;
+    const { total, collection, loading, largeURL } = this.state;
     return (
       <div className={s.app}>
         <Searchbar onSubmit={this.handleSubmit} />
@@ -73,8 +65,8 @@ export default class App extends Component {
         {collection.length > 0 && total > collection.length && (
           <Button handleClick={this.handleLoadMore} />
         )}
-        {currentImage && (
-          <Modal image={currentImage} closeModal={this.handleCloseModal} />
+        {largeURL && (
+          <Modal imageURL={largeURL} closeModal={this.handleCloseModal} />
         )}
       </div>
     );

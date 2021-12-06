@@ -7,5 +7,7 @@ const PER_PAGE = 12;
 export default function fetchImages(query, page) {
   return fetch(
     `${BASE_URL}?q=${query}&page=${page}&key=${API_KEY}&image_type=${TYPE}&orientation=${ORIENT}&per_page=${PER_PAGE}`,
-  ).then(res => res.json());
+  )
+    .then(res => res.json())
+    .catch(console.log);
 }
