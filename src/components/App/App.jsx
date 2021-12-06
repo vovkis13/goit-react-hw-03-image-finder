@@ -58,11 +58,14 @@ export default class App extends Component {
     }));
   };
 
-  handleImageMaximize = async e => {
+  handleImageMaximize = async ({ target }) => {
     const currentImage = this.state.collection.find(
-      image => image.id === e.target.id,
+      ({ id }) => id === Number(target.id),
     );
     this.setState({ currentImage });
+  };
+  handleCloseModal = () => {
+    this.setState({ currentImage: null });
   };
 
   render() {
@@ -89,7 +92,12 @@ export default class App extends Component {
             <Button handleClick={this.handleLoadMore} />
           )}
 
-        {this.state.currentImage && <Modal image={this.state.currentImage} />}
+        {this.state.currentImage && (
+          <Modal
+            image={this.state.currentImage}
+            closeModal={this.handleCloseModal}
+          />
+        )}
       </div>
     );
   }

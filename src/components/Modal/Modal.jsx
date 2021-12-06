@@ -1,11 +1,12 @@
 import React from 'react';
 import s from './Modal.module.css';
+export default function Modal({ image, closeModal }) {
+  const { largeImageURL, tags } = image;
 
-export default function Modal({ image }) {
   return (
-    <div className={s.overlay}>
+    <div className={s.overlay} onClick={closeModal}>
       <div className={s.modal}>
-        <img src={image.largeImageURL} alt={image.tags} />
+        <img className={s.image} src={largeImageURL} alt={tags} />
       </div>
     </div>
   );
