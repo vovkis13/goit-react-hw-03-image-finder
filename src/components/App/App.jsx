@@ -19,8 +19,11 @@ export default class App extends Component {
   };
 
   handleSubmit = async e => {
-    if (!e.target[1].value) return;
     e.preventDefault();
+    if (!e.target[1].value) {
+      this.setState({ collection: [] });
+      return;
+    }
     this.setState({ loading: true });
     const res = await fetchImages(e.target[1].value, 1);
     this.setState({
