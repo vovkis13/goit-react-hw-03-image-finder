@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import fetchImages from '../API/fetchImages';
+import fetchImages from '../../api/fetchImages';
 import Searchbar from '../Searchbar/';
 import ImageGallery from '../ImageGallery';
 import Button from '../Button';
@@ -52,7 +52,7 @@ export default class App extends Component {
   handleCloseModal = () => this.setState({ largeURL: '' });
 
   render() {
-    const { total, collection, loading, largeURL } = this.state;
+    const { query, total, collection, loading, largeURL } = this.state;
     return (
       <div className={s.app}>
         <Searchbar onSubmit={this.handleSubmit} />
@@ -65,11 +65,15 @@ export default class App extends Component {
             <Loader type="Rings" color="#00BFFF" height={120} width={120} />
           </div>
         )}
-        {collection.length > 0 && total > collection.length && (
+        {!loading && collection.length > 0 && total > collection.length && (
           <Button handleClick={this.handleLoadMore} />
         )}
         {largeURL && (
-          <Modal imageURL={largeURL} closeModal={this.handleCloseModal} />
+          <Modal
+            imageURL={largeURL}
+            alt={query}
+            closeModal={this.handleCloseModal}
+          />
         )}
       </div>
     );

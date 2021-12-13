@@ -9,5 +9,5 @@ export default function fetchImages(query, page) {
     `${BASE_URL}?q=${query}&page=${page}&key=${API_KEY}&image_type=${TYPE}&orientation=${ORIENT}&per_page=${PER_PAGE}`,
   )
     .then(res => res.json())
-    .catch(console.log);
+    .catch(console.error);
 }
